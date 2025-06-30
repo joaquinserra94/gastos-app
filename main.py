@@ -6,6 +6,7 @@ import crud
 from pydantic import BaseModel
 from typing import List
 from datetime import datetime
+from fastapi.responses import JSONResponse
 
 
 # Crear sesión de base de datos para cada request
@@ -109,6 +110,18 @@ def registrar_pago(pago: PagoCreate, db: Session = Depends(get_db)):
 @app.get("/pagos/", response_model=List[PagoOut])
 def listar_pagos(grupo_id: int, db: Session = Depends(get_db)):
     return crud.obtener_pagos(db=db, grupo_id=grupo_id)
+
+@app.get("/grupos/{grupo_id}")
+def obtener_grupo(grupo_id: int, db: Session = Depends(get_db)):
+    grupo = db.query(models.Grupo).filter(models.Grupo.id == grupo_id).first()
+    if not grupo:
+        return JSONResponse(content={"error": "Grupo no encontrado"}, status_code=404)
+
+    return {
+        "id": grupo.id,
+        "nombre": grupo.nombre,
+        "personas": [{"id": p.id, "nombre": p.nombre} for p in grupo.personas]
+    }
 
 
 # Crear las tablas
