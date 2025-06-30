@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
+from datetime import datetime
 
 class Grupo(Base):
     __tablename__ = "grupos"
@@ -33,3 +34,15 @@ class Gasto(Base):
 
     pagador = relationship("Persona", back_populates="gastos")
     grupo = relationship("Grupo", back_populates="gastos")
+
+class Pago(Base):
+    __tablename__ = "pagos"
+
+    id = Column(Integer, primary_key=True, index=True)
+    deudor_id = Column(Integer, ForeignKey("personas.id"))
+    acreedor_id = Column(Integer, ForeignKey("personas.id"))
+    grupo_id = Column(Integer, ForeignKey("grupos.id"))
+    monto = Column(Float)
+    fecha = Column(DateTime, default=datetime.utcnow)
+
+    grupo = relationship("Grupo")
