@@ -8,6 +8,14 @@ from typing import List
 from datetime import datetime
 from fastapi.responses import JSONResponse
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
+
+# Iniciar app (¡esto debe ir antes de usar `app`!)
+app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 # Crear sesión de base de datos para cada request
 def get_db():
@@ -62,14 +70,18 @@ class PagoOut(PagoCreate):
     class Config:
         orm_mode = True
 
+class GrupoUpdate(BaseModel):
+    nombre: str
+
+class PersonaUpdate(BaseModel):
+    nombre: str
+
 
 
 # Iniciar app
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"mensaje": "¡Bienvenido a la app de gastos grupales!"}
+
 
 @app.post("/grupos/")
 def crear_grupo(grupo: GrupoCreate, db: Session = Depends(get_db)):
@@ -123,6 +135,17 @@ def obtener_grupo(grupo_id: int, db: Session = Depends(get_db)):
         "personas": [{"id": p.id, "nombre": p.nombre} for p in grupo.personas]
     }
 
+@app.put("/grupos/{grupo_id}")
+def actualizar_grupo(grupo_id: int, datos: GrupoUpdate, db: Session = Depends(get_db)):
+    return crud.editar_grupo(db=db, grupo_id=grupo_id, nuevo_nombre=datos.nombre)
+
+@app.put("/personas/{persona_id}")
+def actualizar_persona(persona_id: int, datos: PersonaUpdate, db: Session = Depends(get_db)):
+    return crud.editar_persona(db=db, persona_id=persona_id, nuevo_nombre=datos.nombre)
+
+@app.get("/")
+def serve_frontend():
+    return FileResponse(os.path.join("frontend", "index.html"))
 
 # Crear las tablas
 models.Base.metadata.create_all(bind=engine)

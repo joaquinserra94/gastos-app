@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>💸 Gastos App</h1>
+  <h1>Gastos App</h1>
 
   <section>
     <h2>Crear grupo</h2>
@@ -19,6 +19,14 @@
     <h2>Grupos existentes</h2>
     <ul id="listaGrupos"></ul>
   </section>
+
+<section>
+  <h2>Compartir grupo</h2>
+  <label for="grupoCompartirId">ID del grupo:</label>
+  <input type="number" id="grupoCompartirId" placeholder="Ej: 1" />
+  <button onclick="compartirGrupo()">Copiar enlace</button>
+</section>
+
 
   <section>
   <h2>Agregar persona a grupo</h2>
@@ -57,6 +65,58 @@
   <ul id="listaLiquidacion"></ul>
 </section>
 
+<section>
+  <h2>Registrar pago entre personas</h2>
+  <label for="grupoPago">ID del grupo:</label>
+  <input type="number" id="grupoPago" placeholder="Ej: 1" />
+
+  <label for="deudorPago">ID del que paga:</label>
+  <input type="number" id="deudorPago" placeholder="Ej: 2" />
+
+  <label for="acreedorPago">ID del que recibe:</label>
+  <input type="number" id="acreedorPago" placeholder="Ej: 1" />
+
+  <input type="number" id="montoPago" placeholder="Monto (€)" step="0.01" />
+  <button onclick="registrarPago()">Registrar pago</button>
+</section>
+
+<section>
+  <h2>Historial de pagos realizados</h2>
+  <label for="grupoIdHistorial">ID del grupo:</label>
+  <input type="number" id="grupoIdHistorial" placeholder="Ej: 1" />
+  <button onclick="verHistorialPagos()">Ver historial</button>
+  <ul id="listaPagos"></ul>
+</section>
+
+<section>
+  <h2>Editar nombre de grupo</h2>
+  <label for="grupoEditarId">ID del grupo:</label>
+  <input type="number" id="grupoEditarId" placeholder="Ej: 1" />
+  <input type="text" id="grupoNuevoNombre" placeholder="Nuevo nombre del grupo" />
+  <button onclick="editarGrupo()">Actualizar nombre</button>
+</section>
+
+<section>
+  <h2>Editar nombre de persona</h2>
+  <label for="personaEditarId">ID de la persona:</label>
+  <input type="number" id="personaEditarId" placeholder="Ej: 3" />
+  <input type="text" id="personaNuevoNombre" placeholder="Nuevo nombre de la persona" />
+  <button onclick="editarPersona()">Actualizar nombre</button>
+</section>
+
+<section>
+  <h2>Eliminar persona</h2>
+  <label for="personaEliminarId">ID de la persona:</label>
+  <input type="number" id="personaEliminarId" placeholder="Ej: 3" />
+  <button onclick="eliminarPersona()">Eliminar</button>
+</section>
+
+<section>
+  <h2>Eliminar gasto</h2>
+  <label for="gastoEliminarId">ID del gasto:</label>
+  <input type="number" id="gastoEliminarId" placeholder="Ej: 5" />
+  <button onclick="eliminarGasto()">Eliminar</button>
+</section>
 
 
   <script src="script.js"></script>

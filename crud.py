@@ -197,3 +197,20 @@ def registrar_pago(db: Session, pago):
 def obtener_pagos(db: Session, grupo_id: int):
     return db.query(models.Pago).filter(models.Pago.grupo_id == grupo_id).all()
 
+def editar_grupo(db: Session, grupo_id: int, nuevo_nombre: str):
+    grupo = db.query(models.Grupo).filter(models.Grupo.id == grupo_id).first()
+    if grupo:
+        grupo.nombre = nuevo_nombre
+        db.commit()
+        db.refresh(grupo)
+    return grupo
+
+def editar_persona(db: Session, persona_id: int, nuevo_nombre: str):
+    persona = db.query(models.Persona).filter(models.Persona.id == persona_id).first()
+    if persona:
+        persona.nombre = nuevo_nombre
+        db.commit()
+        db.refresh(persona)
+    return persona
+
+
